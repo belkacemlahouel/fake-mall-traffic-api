@@ -17,6 +17,14 @@ malls_data = {
     "Cora Limoges": ["Intermarché", "JouéClub", "Brico Dépôt", "Maisons du Monde"]
 }
 
+@app.post("/heartbeat")
+def heartbeat():
+    """
+    Heartbeat endpoint to check if the application is running.
+    Returns the current server timestamp.
+    """
+    return {"status": "alive", "timestamp": datetime.utcnow().isoformat()}
+
 @app.post("/malls")
 def get_malls():
     """
