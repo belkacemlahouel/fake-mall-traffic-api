@@ -2,3 +2,5 @@ fastapi
 requests
 SQLAlchemy
 uvicorn
+duckdb
+
