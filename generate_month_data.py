@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import random
 from enum import Enum
 
-import main
+from main import malls_data
 from models import AgeRange, Gender
 
 # Configuration for peak hours and visit durations
@@ -90,5 +90,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Generate traffic data
-    generate_traffic_data(args.month, args.output_path)
+    generate_traffic_data(args.year, args.month, args.output_path)
 
