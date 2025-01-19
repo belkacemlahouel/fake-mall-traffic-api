@@ -1,10 +1,11 @@
 from fastapi import FastAPI, HTTPException, Query
 from typing import List, Dict, Optional
 from datetime import datetime
-
+from database import load_files_into_duckdb
 
 # FastAPI instance
 app = FastAPI()
+load_files_into_duckdb()
 
 # In-memory data storage for simplicity
 store_visits = []
