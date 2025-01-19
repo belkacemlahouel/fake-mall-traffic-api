@@ -1,5 +1,7 @@
 import duckdb
 import os
+from typing import Optional
+from datetime import datetime
 
 
 # Function to load data from CSV into DuckDB
@@ -30,6 +32,40 @@ def load_data_into_duckdb(csv_file: str, db_path: str):
 
     con.close()
     print(f"Data from {csv_file} has been successfully loaded into DuckDB.")
+
+
+# Helper function to query DuckDB for mall visits
+def query_traffic_data_from_duckdb(mall_name: Optional[str], start_date_hour: datetime, end_date_hour: datetime):
+    """
+    Query the traffic data table in DuckDB for the provided mall name and date range.
+    Returns the list of results.
+    """
+    # Connect to DuckDB
+    con = duckdb.connect("./duckdb/traffic_data.duckdb")
+
+    # Build the base SQL query
+    sql_query = """
+        SELECT mall_name, store_name, timestamp_hour, gender, age_range, visitors, avg_duration_seconds
+        FROM traffic_data
+        WHERE timestamp_hour BETWEEN ? AND ?
+    """
+
+    # Add condition for mall_name if specified
+    if mall_name:
+        sql_query += " AND mall_name = ?"
+
+    # Execute the query with the provided parameters
+    params = [start_date_hour, end_date_hour]
+    if mall_name:
+        params.append(mall_name)
+
+    result = con.execute(sql_query, params).fetchall()
+
+    con.close()
+
+    # Convert the result to a list of dictionaries
+    columns = ["mall_name", "store_name", "timestamp_hour", "gender", "age_range", "visitors", "avg_duration_seconds"]
+    return [dict(zip(columns, row)) for row in result]
 
 
 # Load all files into duckdb

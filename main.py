@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Query
 from typing import List, Dict, Optional
 from datetime import datetime
-from database import load_files_into_duckdb
+from database import query_traffic_data_from_duckdb, load_files_into_duckdb
 
 # FastAPI instance
 app = FastAPI()
@@ -49,14 +49,34 @@ def get_mall_all_store_visits(
     end_date_hour: datetime = Query(..., description="End timestamp in YYYY-MM-DDTHH format")
 ):
     """
-    Retrieve store visit records within a given date range.
+    Retrieve store visit records within a given date range from DuckDB.
     Optionally filter by mall name.
     """
-    filtered_visits = [
-        visit for visit in store_visits
-        if start_date_hour <= visit["timestamp_hour"] <= end_date_hour
-        and (mall_name is None or visit["mall_name"] == mall_name)
-    ]
+    VALID_START_DATE = datetime(2023, 1, 1)
+    VALID_END_DATE = datetime.today()  # updated at each call on purpose
 
-    return filtered_visits
+    # Check if the start_date_hour and end_date_hour are within valid bounds
+    if start_date_hour < VALID_START_DATE or end_date_hour > VALID_END_DATE:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Date range must be between {VALID_START_DATE.strftime('%Y-%m-%d')} and {VALID_END_DATE.strftime('%Y-%m-%d')}"
+        )
+
+    # Ensure start_date_hour is before or equal to end_date_hour
+    if start_date_hour > end_date_hour:
+        raise HTTPException(
+            status_code=400,
+            detail="Start date cannot be after end date"
+        )
+
+    # Query the DuckDB database for the requested data
+    try:
+        store_visits = query_traffic_data_from_duckdb(mall_name, start_date_hour, end_date_hour)
+        if not store_visits:
+            raise HTTPException(status_code=404, detail="No data found for the given criteria")
+
+        return store_visits
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred while querying the database: {str(e)}")
 
