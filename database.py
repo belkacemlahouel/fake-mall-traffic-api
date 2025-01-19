@@ -41,7 +41,9 @@ def query_traffic_data_from_duckdb(mall_name: Optional[str], start_date_hour: da
     Returns the list of results.
     """
     # Connect to DuckDB
-    con = duckdb.connect("./duckdb/traffic_data.duckdb")
+    cwd = os.getcwd()
+    db_path = os.path.join(cwd, "duckdb", "traffic_data.duckdb")
+    con = duckdb.connect(db_path)
 
     # Build the base SQL query
     sql_query = """
@@ -70,29 +72,31 @@ def query_traffic_data_from_duckdb(mall_name: Optional[str], start_date_hour: da
 
 # Load all files into duckdb
 def load_files_into_duckdb():
-    load_data_into_duckdb("./data/2023_01.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2023_03.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2023_05.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2023_07.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2023_09.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2023_11.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2024_01.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2024_03.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2024_05.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2024_07.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2024_09.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2024_11.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2023_02.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2023_04.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2023_06.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2023_08.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2023_10.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2023_12.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2024_02.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2024_04.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2024_06.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2024_08.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2024_10.csv", "./duckdb/traffic_data.duckdb")
-    load_data_into_duckdb("./data/2024_12.csv", "./duckdb/traffic_data.duckdb")
+    cwd = os.getcwd()
+    load_data_into_duckdb(os.path.join(cwd, "data/2023_01.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2023_03.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2023_05.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2023_07.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2023_09.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2023_11.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2024_01.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2024_03.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2024_05.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2024_07.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2024_09.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2024_11.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2023_02.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2023_04.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2023_06.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2023_08.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2023_10.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2023_12.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2024_02.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2024_04.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2024_06.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2024_08.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2024_10.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+    load_data_into_duckdb(os.path.join(cwd, "data/2024_12.csv"), os.path.join(cwd, "duckdb/traffic_data.duckdb"))
+
 
 
